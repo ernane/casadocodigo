@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Home</title>
 </head>
-<body>Ola!
+<body>
+	<h1>Ernane Sena</h1>
 </body>
 </html>
