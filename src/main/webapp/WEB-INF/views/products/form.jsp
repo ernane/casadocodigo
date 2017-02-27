@@ -5,7 +5,7 @@
 <title>Cadastro de produtos</title>
 </head>
 <body>
-	<form method="post">
+	<form method="post" action="/casadocodigo/produtos">
 		<div>
 			<label for="title">Titulo</label> <input type="text" name="title"
 				id="title" />
