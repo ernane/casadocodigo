@@ -2,38 +2,43 @@ package br.com.casadocodigo.loja.controllers;
 
 import javax.transaction.Transactional;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.casadocodigo.loja.daos.ProductDAO;
+import br.com.casadocodigo.loja.models.BookType;
 import br.com.casadocodigo.loja.models.Product;
 
 @Controller
+@Transactional
+@RequestMapping("/produtos")
 public class ProductsController {
-
-	private static final Logger logger = Logger.getLogger(ProductsController.class);
 
 	@Autowired
 	private ProductDAO productDAO;
 
-	@RequestMapping("/produtos")
-	@Transactional
-	public String save(Product product) {
-		productDAO.save(product);
-		return "procuts/ok";
+	@RequestMapping("/form")
+	public ModelAndView form() {
+		ModelAndView modelAndView = new ModelAndView("products/form");
+		modelAndView.addObject("types", BookType.values());
+		return	modelAndView;
 	}
 
-	@RequestMapping("/produtos/form")
-	public String form() {
-		// logs debug message
-		if (logger.isDebugEnabled()) {
-			logger.debug("getWelcome is executed!");
-		}
+	@RequestMapping(method = RequestMethod.POST)
+	public String save(Product product, RedirectAttributes redirectAttributes) {
+		productDAO.save(product);
+		redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso");
+		return "redirect:produtos";
+	}
 
-		// logs exception
-		logger.error("This is Error message");
-		return ("products/form");
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView modelAndView = new ModelAndView("products/list");
+		modelAndView.addObject("products", productDAO.list());
+		return modelAndView;
 	}
 }
